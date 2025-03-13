@@ -41,24 +41,27 @@ To start the necessary services (DynamoDB Local, Redis, and the backend) using D
 
 - Verify that Docker is running by running:
 
-  ```bash
-  docker --version
-  ```
+```bash
+docker --version
+```
 
 - Once Docker is installed, run Docker Compose to start the services:
-  ```bash
-  docker-compose up --build
-  ```
-  This will start DynamoDB Local, Redis, and the backend on your local machine.
+
+```bash
+docker-compose up --build
+```
+
+This will start DynamoDB Local, Redis, and the backend on your local machine.
 
 ### 2. **Add Required Packages**:
 
 If you're running the backend locally (not in Docker), make sure to install the necessary dependencies for the application:
 
 - Navigate to the backend project directory and restore the packages from the `.csproj` file:
-  ```bash
-  dotnet restore
-  ```
+
+```bash
+dotnet restore
+```
 
 Alternatively, if the dependencies are not added yet, you can manually add them:
 
@@ -78,9 +81,11 @@ dotnet build
 ### 4. **Run the Application**:
 
 - After adding the required packages or restoring from the `.csproj` file, you can now run the application using the following command:
-  ```bash
-  dotnet run
-  ```
+
+```bash
+dotnet run
+```
+
 - The backend should be running locally at `http://localhost:5000`.
 
 ### 5. **Open the Application in Two Browser Tabs**:
@@ -95,6 +100,7 @@ dotnet build
 - When you are finished, stop the application by pressing Ctrl + C in the terminal where dotnet run is running.
 
 - Also, bring down the Docker containers to stop DynamoDB Local and Redis by running:
-  ```bash
-  docker-compose down
-  ```
+
+```bash
+docker-compose down
+```
