@@ -1,0 +1,42 @@
+version: '3.7'
+
+services:
+  dynamodb-local:
+    image: amazon/dynamodb-local
+    container_name: dynamodb-local
+    ports:
+      - "8000:8000"
+    networks:
+      - mynetwork
+    environment:
+      - JAVA_OPTS=-Xmx256m -Xms256m
+
+  redis:
+    image: redis
+    container_name: redis
+    ports:
+      - "6379:6379"
+    networks:
+      - mynetwork
+
+  init-dynamodb:
+    image: amazon/aws-cli
+    container_name: init-dynamodb
+    depends_on:
+      - dynamodb-local
+    networks:
+      - mynetwork
+    environment:
+      - AWS_DEFAULT_REGION=us-east-1  # Set the region for the AWS CLI
+      - AWS_ACCESS_KEY_ID=dummy       # Dummy AWS Access Key
+      - AWS_SECRET_ACCESS_KEY=dummy   # Dummy AWS Secret Key
+    entrypoint: >
+      /bin/sh -c "
+      echo 'Waiting for DynamoDB Local to start...';
+      sleep 10;
+      aws --endpoint-url http://dynamodb-local:8000 --region us-east-1 dynamodb create-table --table-name OfflineMessages --attribute-definitions AttributeName=UserId,AttributeType=S AttributeName=Timestamp,AttributeType=S --key-schema AttributeName=UserId,KeyType=HASH AttributeName=Timestamp,KeyType=RANGE --provisioned-throughput ReadCapacityUnits=5,WriteCapacityUnits=5
+      "
+
+networks:
+  mynetwork:
+    driver: bridge
