@@ -7,6 +7,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using RedisPubSubChatSystem.Services;
+using RedisPubSubChatSystem.Repositories;
 
 namespace RedisPubSubChatSystem
 {
@@ -47,6 +48,9 @@ namespace RedisPubSubChatSystem
                 // This ensures that the connection is long-lived.
                 return ConnectionMultiplexer.Connect("localhost:6379");
             });
+
+            services.AddSingleton<IDynamoDbRepository, DynamoDbRepository>();
+            services.AddSingleton<IRedisRepository, RedisRepository>();
 
             services.AddSingleton<IRedisService, RedisService>();
             services.AddSingleton<IDynamoDbService, DynamoDbService>();

@@ -1,27 +1,25 @@
 using System;
 using System.Threading.Tasks;
-using StackExchange.Redis;
+using RedisPubSubChatSystem.Repositories;
 
 namespace RedisPubSubChatSystem.Services;
 
 public class RedisService : IRedisService
 {
-    private readonly IConnectionMultiplexer _redis;
-    private readonly ISubscriber _subscriber;
+    private readonly IRedisRepository _redisRepository;
 
-    public RedisService(IConnectionMultiplexer redis)
+    public RedisService(IRedisRepository redisRepository)
     {
-        _redis = redis;
-        _subscriber = redis.GetSubscriber();
+        _redisRepository = redisRepository;
     }
 
     public async Task PublishMessageAsync(string message)
     {
-        await _subscriber.PublishAsync("chat_channel", message);
+        await _redisRepository.PublishMessageAsync(message);
     }
 
-    public async Task SubscribeToChannelAsync(string channel, Action<string> messageHandler)
+    public async Task SubscribeToChannelAsync(Action<string> messageHandler)
     {
-        await _subscriber.SubscribeAsync(channel, (channel, message) => messageHandler(message));
+        await _redisRepository.SubscribeToChannelAsync(messageHandler);
     }
 }

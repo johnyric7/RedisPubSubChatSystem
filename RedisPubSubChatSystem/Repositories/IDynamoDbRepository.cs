@@ -1,9 +1,9 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace RedisPubSubChatSystem.Services;
+namespace RedisPubSubChatSystem.Repositories;
 
-public interface IDynamoDbService
+public interface IDynamoDbRepository
 {
     Task StoreOfflineMessageAsync(string user, string message);
     Task<List<string>> RetrieveOfflineMessagesAsync(string user);
